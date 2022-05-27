@@ -3,7 +3,7 @@ import Home from "./routes/home/home.component";
 import {Route, Routes} from "react-router-dom";
 import Navigation from "./routes/navigation '/navigation";
 import {initializeApp} from 'firebase/app'
-import SignIn from "./routes/sign in/sign-in";
+import AuthenticationComponent from "./routes/authentication/authentication.component";
 
 
 function Shop(){
@@ -20,7 +20,7 @@ function App() {
           <Route path={'/'} element={<Navigation/>}>
               <Route index element={<Home/>}/>
               <Route path={'shop'} element={<Shop/>}/>
-              <Route path={'signIn'} element={<SignIn/>}/>
+              <Route path={'auth'} element={<AuthenticationComponent/>}/>
           </Route>
 
          {/* the slash means that its tha base URL (starting point)*/}

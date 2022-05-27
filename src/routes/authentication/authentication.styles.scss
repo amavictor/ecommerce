@@ -1,0 +1,14 @@
+.authentication-container{
+  display:flex;
+  justify-content: space-between;
+  margin: 50px auto;
+
+  .signin{
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .signup{
+    margin-right: auto;
+    margin-left: auto;
+  }
+}
