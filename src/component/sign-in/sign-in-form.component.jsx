@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {
     createAuthUserWithEmailAndPassword,
     createUserDocumentFromAuth, signInAuthUserWithEmailAndPassword,
@@ -7,6 +7,7 @@ import {
 import FormInput from "../form-input/form-input.component";
 import './sign-in-form.component.scss'
 import Button from "../button/button.component";
+import {UserContext} from "../../context/user.context";
 
 
 
@@ -20,6 +21,9 @@ const defaultFormField = {
 const SignInForm = () =>{
     const[formField, setFormField] = useState(defaultFormField)
     const {email, password} = formField
+
+    //you'll need the values that you'll be sending to the context for use
+    const {setCurrentUser} = useContext(UserContext)
 
 
     const resetFormFields = ()=>{
@@ -41,9 +45,11 @@ const SignInForm = () =>{
     const handleSubmit = async(e)=>{
         e.preventDefault()
         try{
-            const response= await signInAuthUserWithEmailAndPassword(email,password)
-            console.log(response)
+            const {user}= await signInAuthUserWithEmailAndPassword(email,password)
+            setCurrentUser(user)
+            resetFormFields()
         }
+
         catch (e) {
             switch (e.code) {
                 case 'auth/wrong-password':
