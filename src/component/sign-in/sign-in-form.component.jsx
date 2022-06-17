@@ -7,9 +7,6 @@ import {
 import FormInput from "../form-input/form-input.component";
 import './sign-in-form.component.scss'
 import Button from "../button/button.component";
-import {UserContext} from "../../context/user.context";
-
-
 
 
 const defaultFormField = {
@@ -23,7 +20,7 @@ const SignInForm = () =>{
     const {email, password} = formField
 
     //you'll need the values that you'll be sending to the context for use
-    const {setCurrentUser} = useContext(UserContext)
+   /* const {setCurrentUser} = useContext(UserContext)*/
 
 
     const resetFormFields = ()=>{
@@ -31,8 +28,7 @@ const SignInForm = () =>{
     }
 
     const signInWithGoogle = async()=>{
-        const {user} = await signInWithPopUp();
-        await createUserDocumentFromAuth(user)
+        await signInWithPopUp();
     }
 
     const handleChange = (e) =>{
@@ -46,7 +42,6 @@ const SignInForm = () =>{
         e.preventDefault()
         try{
             const {user}= await signInAuthUserWithEmailAndPassword(email,password)
-            setCurrentUser(user)
             resetFormFields()
         }
 

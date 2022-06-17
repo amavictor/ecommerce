@@ -13,39 +13,30 @@ const defaultFormField = {
     confirmPassword: ''
 }
 //this is the best method for handling forms that have common input tags
-
 const SignUpForm = () =>{
     const[formField, setFormfield] = useState(defaultFormField)
     const {displayName, email, password, confirmPassword} = formField
 
-    const{setCurrentUser} = useContext(UserContext)
-
-
     const resetFormFields = ()=>{
         setFormfield(defaultFormField)
     }
-
     const handleChange = (e) =>{
         const {name, value} = e.target
         setFormfield({...formField, [name]:value})
-
     }
+    //the above is done to handle mutiple input changes based on the name.
     /*I need the name attribute so that I can identify which input that is trigering the change*/
-
     const handleSubmit = async(e)=>{
         e.preventDefault()
         if(password!== confirmPassword){
             alert('Password does not match')
             return
         }
-
         try {
             const {user} = await createAuthUserWithEmailAndPassword(email,password)
             await createUserDocumentFromAuth(user, {displayName})
-            setCurrentUser(user)
             resetFormFields()
         }
-
         catch (e) {
             if(e.code === 'auth/email-already-in-use') {
                 alert("User Already exists")
@@ -53,9 +44,7 @@ const SignUpForm = () =>{
             else{
                 console.log('user creation encountered an error', e)
             }
-
         }
-
     }
     return(
         <div className={'sign-up-container'}>
@@ -73,7 +62,6 @@ const SignUpForm = () =>{
                     }
                     }
                 />//another way to do it*/}
-
                 <FormInput
                     label={"Display name"}
                     type={'text'}
@@ -82,7 +70,6 @@ const SignUpForm = () =>{
                     value={displayName}
                     required
                 />
-
                 <FormInput
                     label={'email'}
                     type={'email'}
@@ -90,9 +77,7 @@ const SignUpForm = () =>{
                     name={'email'}
                     value={email}
                     required
-
                 />
-
                 <FormInput
                     label={'password'}
                     type={'password'}
@@ -100,7 +85,6 @@ const SignUpForm = () =>{
                     name={'password'}
                     value={password}
                     required
-
                 />
                  <FormInput
                     label={'Confrim password'}

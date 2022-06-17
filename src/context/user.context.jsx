@@ -1,4 +1,5 @@
-import {createContext, useState} from "react";
+import {createContext, useEffect, useState} from "react";
+import {createUserDocumentFromAuth, onAuthStateChangeListener, signOutUser} from "../utils/firebase/firebase.utils";
 
 
 //basically how context works, you will need a context
@@ -14,10 +15,24 @@ export const UserContext = createContext({
     setCurrentUser: ()=>null
 
 })
-
 export const UserProvider = ({children}) =>{
     const[currentUser, setCurrentUser] = useState(null)
     const value = {currentUser, setCurrentUser}
+    /*signOutUser()//the moment this userprovider mounts, I want you to sign out*/
+
+    //i will be mounting the authstatechange here becuase Its better to
+    //have it in a place where I'm already storing auth data
+    useEffect(()=>{
+        const unsubscribe = onAuthStateChangeListener((user)=>{
+            if(user){
+                createUserDocumentFromAuth(user)
+            }
+
+            setCurrentUser(user)
+            console.log(user)
+        })//stop listening
+        return unsubscribe//clean up
+    },[])
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
