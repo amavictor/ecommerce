@@ -32,7 +32,7 @@ export const UserProvider = ({children}) =>{
             console.log(user)
         })//stop listening
         return unsubscribe//clean up
-    },[])
+    },[])//
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>
 }
