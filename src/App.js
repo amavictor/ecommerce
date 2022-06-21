@@ -4,15 +4,8 @@ import {Route, Routes} from "react-router-dom";
 import Navigation from "./routes/navigation '/navigation";
 import {initializeApp} from 'firebase/app'
 import AuthenticationComponent from "./routes/authentication/authentication.component";
+import Shop from "./routes/shop/shop.component";
 
-
-function Shop(){
-    return(
-        <div>
-            <h1>I am a shop page</h1>
-        </div>
-    )
-}
 function App() {
 
   return (
