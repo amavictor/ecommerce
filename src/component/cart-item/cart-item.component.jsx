@@ -1,4 +1,6 @@
 import './cart-item.styles.scss'
+import {useContext} from "react";
+import {CartContext} from "../../context/cart-context";
 
 export default function CartItem ({cartItem}){
     const {name,quantity,imageUrl,price} = cartItem
