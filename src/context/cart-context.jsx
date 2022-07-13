@@ -62,6 +62,7 @@ export const CartProvider=({children})=>{
         clearItemFromCart,
         cartTotal
     }
+    //
 
     useEffect(()=>{
         const newCartCount = cartItems.reduce((total,cartItem)=>total + cartItem.quantity,0)

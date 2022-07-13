@@ -9,7 +9,7 @@ import {UserContext} from "../../context/user.context";
 import {signOutUser} from "../../utils/firebase/firebase.utils";
 import CartIcon from "../../component/cart-icon/cart-icon.component";
 import CartDropdown from "../../component/drop-down/cart-dropdown.component";
-import {ProductsContext} from "../../context/product-context";
+import {CategoriesContext} from "../../context/categories-context";
 import {CartContext} from "../../context/cart-context";
 
 

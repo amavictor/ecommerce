@@ -11,7 +11,12 @@ import {getAuth,
 import {getFirestore,
     doc,
     getDoc,
-    setDoc} from 'firebase/firestore'
+    setDoc,
+    collection,
+    writeBatch,
+    query,
+    getDocs
+} from 'firebase/firestore'
 const firebaseConfig = {
     apiKey: "AIzaSyD1bXH7nCus3ONlJ-K0nJuvtlqQo7PI1yE",
     authDomain: "shop-f0cb8.firebaseapp.com",
@@ -33,6 +38,66 @@ export const auth = getAuth()
 export const signInWithPopUp = ()=> signInWithPopup(auth, googleProvider)
 export const firebaseDatabase = getFirestore()
 export const signInWithGoogleRedirect = ()=> signInWithRedirect(auth, googleProvider)
+
+
+//initializing firestore and database
+export const db =getFirestore()
+//function for adding data
+export const addCollectionAndDocuments= async (collectionKey, objectsToAdd)=>{
+    //colectionKey is the name of the category. PS: check firebase for structure
+    const collectionRef = collection(db,collectionKey)
+    //write batch makes transactions go through just like a bank
+    /*Yihua: 1000 => 900
+    -100
+    Zara: 1000 => 1100
+    +100*/
+    //write batch will help us do things like this
+    const batch = writeBatch(db)//instantiating the batch to use our db instance
+    //batch allows us to pass add the writes and read and overwrite and all that
+    //It is only when we fire up the batch that the transaction will begin
+    objectsToAdd.forEach((object)=>{
+        const docRef = doc(collectionRef,object.title.toLowerCase())
+        batch.set(docRef, object)
+    })
+    await batch.commit()
+    console.log('done')
+}
+
+export const getCategoriesAndDocuments = async()=>{
+    const collectionRef = collection(db, 'categories')
+    const q = query(collectionRef)
+    const querySnapshot = await getDocs(q)
+    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot)=>{
+        const{title, items} = docSnapshot.data()
+        acc[title.toLowerCase()] = items
+        return acc
+    }, {})
+    /*i'm basically trying to build this out with the code above'
+    const SHOP_DATA = [
+        {
+            title: 'Hats',
+            items: [
+                {
+                    id: 1,
+                    name: 'Brown Brim',
+                    imageUrl: 'https://i.ibb.co/ZYW3VTp/brown-brim.png',
+                    price: 25,
+                },
+                {
+                    id: 2,
+                    name: 'Blue Beanie',
+                    imageUrl: 'https://i.ibb.co/ypkgK0X/blue-beanie.png',
+                    price: 18,
+                },
+            ]
+        }
+    ]*/
+
+    return categoryMap
+}
+
+
+
 export const createUserDocumentFromAuth = async (userAuth, additionalInformation ={}) =>{
     const userDocRef = doc(firebaseDatabase, 'users', userAuth.uid)
     console.log(userDocRef)

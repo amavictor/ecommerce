@@ -1,4 +1,4 @@
-import Directory from "./component/directory/directory";
+import DirectoryComponent from "./component/directory/directory.component";
 import Home from "./routes/home/home.component";
 import {Route, Routes} from "react-router-dom";
 import Navigation from "./routes/navigation '/navigation";
@@ -13,7 +13,7 @@ function App() {
       <Routes>
           <Route path={'/'} element={<Navigation/>}>
               <Route index element={<Home/>}/>
-              <Route path={'shop'} element={<Shop/>}/>
+              <Route path={'shop/*'} element={<Shop/>}/>
               <Route path={'auth'} element={<AuthenticationComponent/>}/>
               <Route path={'checkout'} element={<Checkout/>}/>
           </Route>

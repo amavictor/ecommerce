@@ -1,4 +1,4 @@
-import Directory from "../../component/directory/directory";
+import DirectoryComponent from "../../component/directory/directory.component";
 import {Outlet} from "react-router-dom";
 
 function Home() {
@@ -33,7 +33,7 @@ function Home() {
 
     return (
         <div>
-            <Directory categories = {category}/>
+            <DirectoryComponent categories = {category}/>
             <Outlet/>
         </div>
 
