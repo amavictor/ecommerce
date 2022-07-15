@@ -1,17 +1,17 @@
-import './form-input.styles.scss'
+import {FormInputLabel,Input,Group} from './form-input.styles'
 const FormInput = ({label, ...otherProps})=>{
     return(
-        <div className={'group'}>
-            <input className={'form-input'} {...otherProps}/>
+        <Group>
+            <Input {...otherProps}/>
             {label &&( //if label exist, then render this label
-                <label className={`${otherProps.value.length ? 'shrink':null} form-input-label`}>{label} </label>
+                <FormInputLabel shrink={otherProps.value.length}>{label} </FormInputLabel>
             /* the code above is for shrinking the label when you start typing. so If the length on the value is more
             than 1, toggle shrink class*/
             )}
 
 
 
-        </div>
+        </Group>
     )
 }
 export default FormInput
