@@ -1,5 +1,5 @@
 import {Link, Outlet} from 'react-router-dom'
-import {CgShoppingCart} from "react-icons/all";
+// import {CgShoppingCart} from "react-icons/all";
 import {Fragment, useContext} from "react";
 
 //you can import svgs as components

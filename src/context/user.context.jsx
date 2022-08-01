@@ -1,4 +1,4 @@
-import {createContext, useEffect, useState} from "react";
+import {createContext, useEffect, useReducer, useState} from "react";
 import {createUserDocumentFromAuth, onAuthStateChangeListener, signOutUser} from "../utils/firebase/firebase.utils";
 
 
@@ -6,33 +6,62 @@ import {createUserDocumentFromAuth, onAuthStateChangeListener, signOutUser} from
 /*context is used to store values or states that components at any point
 in your code might want to access.
     The context has two parts:
-1. the actually storage please for the states or whatever
+1. the actual storage place for the states or whatever
 2. the provider that is a component that you will use to wrap around
 elements that need to access the context*/
 
 export const UserContext = createContext({
+    setCurrentUser: () => null,
     currentUser: null,
-    setCurrentUser: ()=>null
+});
 
-})
-export const UserProvider = ({children}) =>{
-    const[currentUser, setCurrentUser] = useState(null)
-    const value = {currentUser, setCurrentUser}
-    /*signOutUser()//the moment this userprovider mounts, I want you to sign out*/
+export const USER_ACTION_TYPES = {
+    SET_CURRENT_USER: 'SET_CURRENT_USER',
+};
 
-    //i will be mounting the authstatechange here becuase Its better to
-    //have it in a place where I'm already storing auth data
-    useEffect(()=>{
-        const unsubscribe = onAuthStateChangeListener((user)=>{
-            if(user){
-                createUserDocumentFromAuth(user)
+const INITIAL_STATE = {
+    currentUser: null,
+};
+
+const userReducer = (state, action) => {
+    const { type, payload } = action;
+
+    switch (type) {
+        case USER_ACTION_TYPES.SET_CURRENT_USER:
+            return { ...state, currentUser: payload };
+        default:
+            throw new Error(`Unhandled type ${type} in userReducer`);
+    }
+};
+
+export const UserProvider = ({ children }) => {
+    const [{ currentUser }, dispatch] = useReducer(userReducer, INITIAL_STATE);
+
+    const setCurrentUser = (user) =>
+        dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, currentUser: user });
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChangeListener((user) => {
+            if (user) {
+                createUserDocumentFromAuth(user);
             }
+            setCurrentUser(user);
+        });
 
-            setCurrentUser(user)
-            console.log(user)
-        })//stop listening
-        return unsubscribe//clean up
-    },[])
+        return unsubscribe;
+    }, []);
 
-    return <UserContext.Provider value={value}>{children}</UserContext.Provider>
-}
+    const value = {
+        currentUser,
+    };
+
+    return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
+};
+
+/*
+const userReducer =(state,action)=>{
+    return{
+        /!*change the state with the action*!/
+        currentUser:null
+    }
+}*/
