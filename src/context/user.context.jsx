@@ -1,14 +1,7 @@
 import {createContext, useEffect, useReducer, useState} from "react";
 import {createUserDocumentFromAuth, onAuthStateChangeListener, signOutUser} from "../utils/firebase/firebase.utils";
+import {createAction} from "../utils/reducer/reducer.utils";
 
-
-//basically how context works, you will need a context
-/*context is used to store values or states that components at any point
-in your code might want to access.
-    The context has two parts:
-1. the actual storage place for the states or whatever
-2. the provider that is a component that you will use to wrap around
-elements that need to access the context*/
 
 export const UserContext = createContext({
     setCurrentUser: () => null,
@@ -38,7 +31,7 @@ export const UserProvider = ({ children }) => {
     const [{ currentUser }, dispatch] = useReducer(userReducer, INITIAL_STATE);
 
     const setCurrentUser = (user) =>
-        dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, currentUser: user });
+        dispatch(createAction( USER_ACTION_TYPES.SET_CURRENT_USER, user));
 
     useEffect(() => {
         const unsubscribe = onAuthStateChangeListener((user) => {
@@ -57,11 +50,3 @@ export const UserProvider = ({ children }) => {
 
     return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
-
-/*
-const userReducer =(state,action)=>{
-    return{
-        /!*change the state with the action*!/
-        currentUser:null
-    }
-}*/
