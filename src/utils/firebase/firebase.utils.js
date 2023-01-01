@@ -67,33 +67,7 @@ export const getCategoriesAndDocuments = async()=>{
     const collectionRef = collection(db, 'categories')
     const q = query(collectionRef)
     const querySnapshot = await getDocs(q)
-    const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot)=>{
-        const{title, items} = docSnapshot.data()
-        acc[title.toLowerCase()] = items
-        return acc
-    }, {})
-    /*i'm basically trying to build this out with the code above'
-    const SHOP_DATA = [
-        {
-            title: 'Hats',
-            items: [
-                {
-                    id: 1,
-                    name: 'Brown Brim',
-                    imageUrl: 'https://i.ibb.co/ZYW3VTp/brown-brim.png',
-                    price: 25,
-                },
-                {
-                    id: 2,
-                    name: 'Blue Beanie',
-                    imageUrl: 'https://i.ibb.co/ypkgK0X/blue-beanie.png',
-                    price: 18,
-                },
-            ]
-        }
-    ]*/
-
-    return categoryMap
+    return querySnapshot.docs.map(docSnapshot => docSnapshot.data())
 }
 
 
@@ -141,4 +115,4 @@ export const signInAuthUserWithEmailAndPassword = async(email,password)=>{
 export const signOutUser = async ()=> await signOut(auth)
 
 export const onAuthStateChangeListener = (callback) => onAuthStateChanged(auth,callback)
-//this above is the obsever of the onAuthStat change
+//this above is the observer of the onAuthStat change

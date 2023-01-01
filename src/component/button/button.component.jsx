@@ -1,7 +1,7 @@
 import {
     BaseButton,
     GoogleSignInButton,
-    InvertedButton
+    InvertedButton, LoadingSpinner
 } from './button.styles'
 //to be able to get different styling with this sign button component,
 //I will need a way to control it using a class. I will use a variable
@@ -19,15 +19,14 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) =>
         [BUTTON_TYPE_CLASSES.inverted]: InvertedButton,
     }[buttonType]);
 
-export default function Button({children, buttonType,...otherprops}){
+export default function Button({children, isLoading, buttonType,...otherprops}){
     const CustomButton = getButton(buttonType)
     return(
-        /*<button className={`button-container ${BUTTON_TYPES_ClASSES[buttonType]}`}
-                {...otherprops}
-        >
-            {/!*!//the square bracket is a way of accessing the object key*!/}
-            {children}
-        </button>*/
-        <CustomButton {...otherprops}>{children}</CustomButton>
+
+        <CustomButton disabled={isLoading} {...otherprops}>
+            {
+                isLoading ? <LoadingSpinner/> : children
+            }
+        </CustomButton>
     )
 }
